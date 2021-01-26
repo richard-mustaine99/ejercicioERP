@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+	<title>Editar {{ contactos.NOM_CONTACTO }} {{ contactos.APELLP_CONTACTO }}</title>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> 
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="{% static 'fontawesome/css/font-awesome.css' %}">
+
+  <!-- JQuery -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+  <link rel="stylesheet" type="text/css" href="{% static 'css/principal.css' %}">
+  <script src="{% static 'js/rut.js' %}"></script>
+  <script src="{% static 'js/inputsValidators.js' %}"></script>
+
+
+</head>
+<body>
+  <header class="header">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <a class="navbar-brand active" href="/appEmpresa/">Inicio</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="/appEmpresa/empresa">Empresas</a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="/appEmpresa/contacto/">Contactos</a>
+          </li>
+
+        </ul>
+      </div>
+      <a class="btn btn-danger" href="/appEmpresa/logout/" role="button">Logout</a>
+    </nav>
+  </header>
+
+  <!-- Comprobacion de que el usuario esta logeado -->
+  {% if user.is_authenticated %}
+
+  {% if contactos %}
+  <div class="container" style="text-align: center;">
+    
+    <form action="/appEmpresa/actualizar_contacto/" method="post" style="background-color: rgba(75, 99, 105, 0.9)">
+      <div class="col" >
+        {% csrf_token %}
+        <h4 style="background-color: rgba(45, 37, 66, 0.6)">Ingrese datos del contacto</h4>
+        <br>
+          <!-- Rut -->
+          <div class="row">
+            <div class="col-md-5"style="text-align: right;">
+              <input type="hidden" name="id_contacto" value="{{ contactos.id }}" required>
+              <label>Rut del contacto</label>
+            </div>
+            <div class="col-md-">
+              <input type="text" id="txt_rut" name="txt_rut" maxlength="12" value="{{ contactos.RUT_CONTACTO }}" placeholder="Introduzca su rut" required onkeypress="return soloRut(event)" style="width: 300px;"> 
+            </div>
+          </div>
+              <br>
+          <!-- Nombre contacto -->
+          <div class="row">
+            <div class="col-md-5" style="text-align: right;">
+              <label>Nombre del contacto</label>
+            </div>
+            <div class="col-md-">
+              <input type="text" name="txt_nombre" maxlength="50" value="{{ contactos.NOM_CONTACTO }}" placeholder="Introduzca su nombre" required onkeypress="return soloLetras(event)" style="width: 300px;">
+            </div>
+          </div>
+              <br>
+          <!-- Apellido contacto -->
+          <div class="row">
+            <div class="col-md-5" style="text-align: right;">
+              <label>Apellido Paterno </label>
+            </div>
+            <div class="col-md-">
+              <input type="text" name="txt_apellido_p" maxlength="50" value="{{ contactos.APELLP_CONTACTO }}" placeholder="Introduzca su apellido paterno" required onkeypress="return soloLetras(event)" style="width: 300px;">
+            </div>
+          </div>
+              <br>
+              <div class="row">
+                <div class="col-md-5" style="text-align: right;">
+                  <label>Apellido Materno </label>
+                </div>
+                <div class="col-md-">
+                  <input type="text" name="txt_apellido_m" maxlength="50" value="{{ contactos.APELLM_CONTACTO }}" placeholder="Introduzca su apellido materno" required onkeypress="return soloLetras(event)" style="width: 300px;">
+                </div>
+              </div>
+                  <br>
+              <!-- Teléfono -->
+              <div class="row">
+                <div class="col-md-5" style="text-align: right;">
+                  <label>Teléfono</label>
+                </div>
+                <div class="col-md-">
+                  <input type="text" name="txt_telefono" maxlength="9" value="{{ contactos.TELEFONO }}" placeholder="Introduzca su número teléfonico" required onkeypress="return soloNumeros(event)" style="width: 300px;">
+                </div>
+              </div>
+                  <br>
+              <!-- Email -->
+              <div class="row">
+                <div class="col-md-5" style="text-align: right;">
+                  <label>Email</label>
+                </div>
+                <div class="col-md-">
+                  <input type="text" name="txt_email" maxlength="80" value="{{ contactos.EMAIL }}" placeholder="Introduzca su email" required onkeypress="return soloAlfanumerico(event)" style="width: 300px;">
+                </div>
+              </div>
+                  <br>
+              <!-- Dirección -->
+              <div class="row">
+                <div class="col-md-5" style="text-align: right;">
+                  <label>Dirección</label>
+                </div>
+                <div class="col-md-">
+                  <input type="text" name="txt_direccion" maxlength="100" value="{{ contactos.DIRECCIÓN }}" placeholder="Introduzca su dirección" required onkeypress="return soloAlfanumerico(event)" style="width: 300px;">
+                </div>
+              </div>
+                  <br>
+              <!-- Select regiones -->
+              <div class="row">
+                <div class="col-md-5" style="text-align: right;">
+                  <label>Regiones</label>
+                </div>
+                <div class="col-md-">
+                  <select id="regiones">
+                    <option value="-1">Seleccione...</option>   
+                  </select>     
+                </div>
+              </div>
+                  <br>
+                <input type="text" id="txt_region" name="txt_region" value="{{ contactos.REGION }}" hidden>
+    
+              <!-- Select provincias -->
+              <div class="row" id="div_prov" name="div_prov">
+                <div class="col-md-5" style="text-align: right;">
+                  <label>Provincias</label>
+                </div>
+                <div class="col-md-">
+                  <select id="provincias">
+                    <option value="-1">Seleccione...</option>  
+                  </select>  
+                </div>
+              </div>
+                  <br>
+                <input type="text" id="txt_provincia" name="txt_provincia" value="{{ contactos.PROVINCIA }}" hidden>
+              <!-- Select comunas -->
+              <div class="row" id="div_com" name="div_com">
+                <div class="col-md-5" style="text-align: right;">
+                  <label>Comunas</label>
+                </div>
+                <div class="col-md-">
+                  <select id="comunas">
+                    <option value="-1">Seleccione...</option>  
+                  </select>    
+                </div>
+              </div>
+                  <br>
+                <input type="text" id="txt_comuna" name="txt_comuna" value="{{ contactos.COMUNA }}" hidden>
+          
+      </div>
+        <div class="col">
+          <br>
+          <a href="/appEmpresa/contacto/" class="btn btn-primary"style="width: 150px;">Volver al listado</a>
+          <br><br>
+          <input type="submit" onclick="validador(event)" value="Actualizar" class="btn btn-success"style="width: 150px;">
+          <br><br>
+        </div>
+
+    </form>
+  </div>
+  {% endif %}      
+      
+    {% else %}
+
+      <script type="text/javascript">
+        $(document).ready(function () {
+          alert("Usuario no autenticado");
+          window.location.replace("/appEmpresa/iniciar_sesion");
+        });
+      </script>
+    {% endif %}
+
+
+
+
+<script type="text/javascript">
+
+$(document).ready(function () {
+    $("#txt_rut").rut({formatOn: 'keyup', ignoreControlKeys: false});
+});
+</script>
+<script type="text/javascript" src="{% static 'js/mainEdit.js' %}"></script>
+</body>
+</html>
+

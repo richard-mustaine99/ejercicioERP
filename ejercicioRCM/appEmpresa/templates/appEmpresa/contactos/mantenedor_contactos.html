@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+
+  <title>Listado de Contactos</title>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">	
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="{% static 'fontawesome/css/font-awesome.css' %}">
+
+  <!-- JQuery -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+  <link rel="stylesheet" type="text/css" href="{% static 'css/principal.css' %}">
+
+</head>
+<body>
+  <header class="header">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <a class="navbar-brand active" href="/appEmpresa/">Inicio</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="/appEmpresa/empresa">Empresas</a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="/appEmpresa/contacto/">Contactos</a>
+          </li>
+
+        </ul>
+      </div>
+      <a class="btn btn-danger" href="/appEmpresa/logout/" role="button">Logout</a>
+    </nav>
+  </header>
+
+    <!-- Comprobacion de que el usuario esta logeado -->
+    {% if user.is_authenticated %}
+
+            {% if contactos %}
+            <div class="container">
+              <br><br><br><br><br>
+              <h4>Listado de contactos </h4>
+                  <table class="table table-striped table-dark">
+                      <thead>
+                          <tr>
+                              <th>Rut</th>
+                              <th>Nombre</th>
+                              <th>Apellido Paterno</th>
+                              <th>Apellido Materno</th>
+                              <th>Telefono</th>
+                              <th>Email</th>
+                              <th>Dirección del contacto</th>
+                              <!-- <th>Región</th>
+                              <th>Provincia</th>
+                              <th>Comuna</th> -->
+                              <th>Acción</th>
+                          </tr>
+                          
+                      </thead>
+                      {% for c in contactos %}
+                      <tbody>
+                          <tr>
+                              <td>{{c.RUT_CONTACTO}}</td>
+                              <td>{{c.NOM_CONTACTO}}</td>
+                              <td>{{c.APELLP_CONTACTO}}</td>
+                              <td>{{c.APELLM_CONTACTO}}</td>
+                              <td>{{c.TELEFONO}}</td>
+                              <td>{{c.EMAIL}}</td>
+                              <td>{{c.DIRECCIÓN}}</td>
+                              <!-- <td>{{c.REGION}}</td>
+                              <td>{{c.PROVINCIA}}</td>
+                              <td>{{c.COMUNA}}</td> -->
+                              <td><a href="/appEmpresa/contacto/eliminar/cargar/{{c.id}}"><button type="button" class="btn btn-danger"><span class="fa fa-trash"></span></button></a>  <a href="/appEmpresa/editar_contacto/{{c.id}}"><button type="button" class="btn btn-secondary"><span class="fa fa-pencil"></span></button></a>  </td>
+                          </tr>
+                      </tbody>
+                  {% endfor %}
+                  </table>
+                  <a class="btn btn-primary" href="/appEmpresa/formulario_crear_contacto" role="button">Agregar Nuevo Contacto</a>
+                  {% else %}
+                <div style="text-align: center; color: white;">
+                  <p>No hay contactos disponibles.</p>
+                  <a class="btn btn-primary" href="/appEmpresa/formulario_crear_contacto" role="button">Agregar Nuevo Contacto</a>
+                </div>
+              {% endif %}
+
+            </div>      
+      
+    {% else %}
+
+      <script type="text/javascript">
+        $(document).ready(function () {
+          alert("Usuario no autenticado");
+          window.location.replace("/appEmpresa/iniciar_sesion");
+        });
+      </script>
+    {% endif %} 
+
+
+</body>
+</html>
+
